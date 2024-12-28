@@ -2,6 +2,9 @@
 package snakegame;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -10,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -33,11 +37,13 @@ public class Board extends JPanel implements ActionListener{
     private boolean up = false;
     private boolean down = false;
     private boolean game = true;
+    private JLabel label;
     
 
     public Board() {
         addKeyListener(new TAdapter());
         setBackground(Color.BLACK);
+        setPreferredSize(new Dimension(500,500));
         setFocusable(true);
 
         loadImages();
@@ -78,7 +84,7 @@ public class Board extends JPanel implements ActionListener{
                 game = false;
                 
             }
-            if(x[0] >= 470 || y[0] >= 460 || x[0] < 0 || y[0] < 0) {
+            if(x[0] >= 500 || y[0] >= 500 || x[0] < 0 || y[0] < 0) {
                 game = false;
                 
              }
@@ -90,9 +96,11 @@ public class Board extends JPanel implements ActionListener{
     }
      @Override
     public void actionPerformed(ActionEvent e) {
-        eatApple();
-        chackCollision();
-        move();
+        if(game){
+            eatApple();
+            chackCollision();
+            move();
+        }
         repaint();
     }
     public void move(){
@@ -125,7 +133,8 @@ public class Board extends JPanel implements ActionListener{
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(apple, appleX, appleY, this);
+      if(game){
+            g.drawImage(apple, appleX, appleY, this);
         for (int i = 0; i < dots; i++) {
             if (i==0) {
                g.drawImage(head, x[i], y[i], this);
@@ -134,6 +143,14 @@ public class Board extends JPanel implements ActionListener{
             } 
         }
         Toolkit.getDefaultToolkit().sync();
+      }else{
+          Font f = new Font("SAN_SERIF",Font.BOLD,15);
+          FontMetrics met = getFontMetrics(f);
+          g.setFont(f);
+          g.setColor(Color.WHITE);
+         String text = "Game Over!";
+        g.drawString(text+"   Your Score : "+point, (400-met.stringWidth(text))/2, 500/2);
+      }
     }
     
      public class TAdapter extends KeyAdapter{

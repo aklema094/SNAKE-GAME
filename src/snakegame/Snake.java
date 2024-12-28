@@ -12,7 +12,6 @@ public class Snake extends JFrame {
         this.setIconImage(icon.getImage());
         add(new Board());
         pack();
-        setSize(500,500);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
