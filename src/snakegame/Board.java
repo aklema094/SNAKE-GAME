@@ -32,7 +32,7 @@ public class Board extends JPanel implements ActionListener{
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
-   
+    private boolean game = true;
     
 
     public Board() {
@@ -71,9 +71,27 @@ public class Board extends JPanel implements ActionListener{
            locateApple();
         }
     }
+    public void chackCollision(){
+        for (int i = dots; i > 0; i--) {
+            
+            if(((i>4) && x[0] == x[i] &&y[0] == y[i])){
+                game = false;
+                
+            }
+            if(x[0] >= 470 || y[0] >= 460 || x[0] < 0 || y[0] < 0) {
+                game = false;
+                
+             }
+            if(!game){
+                timer.stop();
+            }
+            
+        }
+    }
      @Override
     public void actionPerformed(ActionEvent e) {
         eatApple();
+        chackCollision();
         move();
         repaint();
     }
@@ -104,9 +122,10 @@ public class Board extends JPanel implements ActionListener{
     }
     
     
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(head, appleX, appleY, this);
+        g.drawImage(apple, appleX, appleY, this);
         for (int i = 0; i < dots; i++) {
             if (i==0) {
                g.drawImage(head, x[i], y[i], this);
