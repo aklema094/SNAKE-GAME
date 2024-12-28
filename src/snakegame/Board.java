@@ -17,8 +17,8 @@ public class Board extends JPanel implements ActionListener{
     
     private int dots;
     private final int allDots = 2500;
-    private final int dotSize = 14;
-    private final int rendomPos = 30;
+    private final int dotSize = 10;
+    private final int rendomPos = 29;
     private int x[] = new int[allDots];
     private int y[] = new int[allDots];
     private Image apple;
@@ -63,8 +63,17 @@ public class Board extends JPanel implements ActionListener{
       timer.start();
       
     }
+    public void eatApple(){
+        if(x[0] == appleX && y[0] == appleY){
+            dots++;
+            point++;
+            
+           locateApple();
+        }
+    }
      @Override
     public void actionPerformed(ActionEvent e) {
+        eatApple();
         move();
         repaint();
     }
@@ -89,15 +98,15 @@ public class Board extends JPanel implements ActionListener{
     }
     public void locateApple(){
         int r = (int) (Math.random()*rendomPos);
-        appleX = r*10;
+        appleX = r*dotSize;
         r = (int) (Math.random()*rendomPos);
-        appleY = r*10;
+        appleY = r*dotSize;
     }
     
     
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(apple, appleX, appleY, this);
+        g.drawImage(head, appleX, appleY, this);
         for (int i = 0; i < dots; i++) {
             if (i==0) {
                g.drawImage(head, x[i], y[i], this);
