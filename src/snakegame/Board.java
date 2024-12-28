@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -30,9 +32,11 @@ public class Board extends JPanel implements ActionListener{
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
+   
     
 
     public Board() {
+        addKeyListener(new TAdapter());
         setBackground(Color.BLACK);
         setFocusable(true);
 
@@ -83,7 +87,6 @@ public class Board extends JPanel implements ActionListener{
         }
         
     }
-    
     public void locateApple(){
         int r = (int) (Math.random()*rendomPos);
         appleX = r*10;
@@ -97,12 +100,44 @@ public class Board extends JPanel implements ActionListener{
         g.drawImage(apple, appleX, appleY, this);
         for (int i = 0; i < dots; i++) {
             if (i==0) {
-                g.drawImage(head, x[i], y[i], this);
+               g.drawImage(head, x[i], y[i], this);
             }else{
                  g.drawImage(body, x[i], y[i], this);
             } 
         }
         Toolkit.getDefaultToolkit().sync();
+    }
+    
+     public class TAdapter extends KeyAdapter{
+         
+        @Override
+        public void keyPressed(KeyEvent e){
+            
+            int key = e.getKeyCode();
+            
+            if(key == KeyEvent.VK_LEFT && (!right)){
+                left = true;
+                up = false;
+                down =false;
+            }
+            if(key == KeyEvent.VK_RIGHT && (!left)){
+                right = true;
+                up = false;
+                down =false;
+            }
+            if(key == KeyEvent.VK_UP && (!down)){
+                up = true;
+                left = false;
+                right =false;  
+            }
+            if(key == KeyEvent.VK_DOWN && (!up)){
+                down = true;
+                left = false;
+                right =false;
+            }
+            
+        }
+        
     }
 
 
